@@ -1,0 +1,22 @@
+---
+# tasks file for openssh_server debian based distros
+
+- name: "Repository | Ensure prerequisites for PostreSQL Repo"
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+    state: present
+
+- name: "Repository | Add PGDG APT GPG key"
+  ansible.builtin.apt_key:
+    url: "{{ postgresql_repo_apt_key_url }}"
+    state: present
+
+- name: "Repository | Add PGDG APT repository"
+  ansible.builtin.apt_repository:
+    repo: "{{ postgresql_repo_repository }}"
+    filename: "pgdg"
+    state: present
+    update_cache: true

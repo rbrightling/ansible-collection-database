@@ -1,0 +1,40 @@
+### REQUIRED
+
+namespace: rbrightling
+name: database
+version: 0.1.0
+
+readme: README.md
+
+authors:
+  - Robert Brightling <dev@robert.brightling.me.uk>
+
+
+### OPTIONAL but strongly recommended
+
+# A short summary description of the collection
+description: Collection of Database Administration roles
+license:
+  - LGPL-3.0-or-later
+
+# A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
+# requirements as 'namespace' and 'name'
+tags:
+  - postgresql
+  - database
+  - linux
+
+dependencies: {}
+
+# The URL of the originating SCM repository
+repository: https://github.com/rbrightling/ansible-collection-database
+documentation: https://github.com/rbrightling/ansible-collection-database
+homepage: https://github.com/rbrightling/ansible-collection-database
+issues: https://github.com/rbrightling/ansible-collection-database/issues
+
+build_ignore:
+  - molecule
+  - tox.ini
+  - .tox
+  - .github
+  - pytestdebug.log

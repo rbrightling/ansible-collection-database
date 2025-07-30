@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include rbrightling.database.postgresql_repo"
+      ansible.builtin.include_role:
+        name: "postgresql_repo"

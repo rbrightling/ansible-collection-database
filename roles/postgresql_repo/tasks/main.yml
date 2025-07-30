@@ -1,0 +1,25 @@
+---
+# tasks file for openssh_server
+
+- name: Include distro variables
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_distribution | lower }}.yml"
+        - "{{ ansible_os_family | lower }}.yml"
+        - default.yml
+      paths:
+        - '{{ playbook_dir }}/vars'
+        - '{{ role_path }}/vars'
+
+- name: Include distro specific tasks
+  ansible.builtin.include_tasks: "{{ dist_tasks_file }}"
+  loop: "{{ query('first_found', params, errors='ignore') }}"
+  loop_control:
+    loop_var: "dist_tasks_file"
+  vars:
+    params:
+      files:
+        - "{{ ansible_os_family | lower }}.yml"
