@@ -1,0 +1,15 @@
+{% macro postgresql_conf_format(option, value) -%}
+{% if option not in postgresql__unsupported_config_option %}
+{% if value is sameas True  %}
+{{ option }} = on
+{% elif value is sameas False  %}
+{{ option }} = off
+{% elif value is string %} 
+{{ option }} = '{{ value }}'
+{% elif value is iterable and value is not string %} 
+{{ option }} = '{{ value|join(",") }}'
+{% elif value is not none %}
+{{ option }} = {{ value }}
+{% endif %}
+{% endif %}
+{%- endmacro %}

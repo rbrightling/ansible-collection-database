@@ -1,0 +1,34 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include rbrightling.database.postgresql"
+      ansible.builtin.include_role:
+        name: "postgresql"
+      vars:
+        postgresql_templates:
+          - name: lite
+            template: template0
+            extensions:
+              - credcheck
+        postgresql_users:
+          - name: test_user01
+            password: ExamplePassword!
+        postgresql_databases:
+          - name: test_database01
+            schemas:
+              - name: test_schema01
+              - name: test_schema02
+                owner: test_user01
+          - name: test_database02
+            template: template_lite
+            extensions:
+              - pgaudit
+        postgresql_privs:
+          - login_db: test_database01
+            roles: test_user01
+            type: database
+            privs: ALL
+
+
+

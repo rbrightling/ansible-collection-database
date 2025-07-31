@@ -1,0 +1,103 @@
+---
+- name: Configure postgresql service override directory
+  ansible.builtin.file:
+    path: "/etc/systemd/system/postgresql.service.d/"
+    owner: root
+    group: root
+    mode: "0755"
+    state: directory
+  become: true
+  tags:
+    - configure
+
+- name: Configure postgresql service override conf
+  ansible.builtin.template:
+    src: postgresql.service.override.conf.j2
+    dest: "/etc/systemd/system/postgresql.service.d/override.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  notify:
+    - Reload systemd
+    - Restart postgresql service
+  tags:
+    - configure
+
+- name: Configure postgresql conf
+  ansible.builtin.template:
+    src: postgresql.conf.j2
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf"
+    owner: "{{ postgresql__system_user }}"
+    group: "{{ postgresql__system_group }}"
+    mode: "0600"
+  become: true
+  notify:
+    - Restart postgresql service
+  tags:
+    - configure
+
+- name: Configure postgresql hba
+  ansible.builtin.template:
+    src: pg_hba.conf.j2
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
+    owner: "{{ postgresql__system_user }}"
+    group: "{{ postgresql__system_group }}"
+    mode: "0600"
+  become: true
+  notify:
+    - Restart postgresql service
+  tags:
+    - configure
+
+- name: Configure postgresql bashrc
+  ansible.builtin.template:
+    src: bashrc.j2
+    dest: "/var/lib/postgresql/.bash_profile"
+    owner: "{{ postgresql__system_user }}"
+    group: "{{ postgresql__system_group }}"
+    mode: "0644"
+  become: true
+  tags:
+    - configure
+
+
+- name: Configure postgresql ident conf
+  ansible.builtin.template:
+    src: pg_ident.conf.j2
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_ident.conf"
+    owner: "{{ postgresql__system_user }}"
+    group: "{{ postgresql__system_group }}"
+    mode: "0600"
+  become: true
+  notify:
+    - Restart postgresql service
+  tags:
+    - configure
+
+
+- name: Configure postgresql start conf
+  ansible.builtin.template:
+    src: start.conf.j2
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/start.conf"
+    owner: "{{ postgresql__system_user }}"
+    group: "{{ postgresql__system_group }}"
+    mode: "0600"
+  become: true
+  notify:
+    - Restart postgresql service
+  tags:
+    - configure
+
+- name: Configure postgresql pg_ctl conf
+  ansible.builtin.template:
+    src: pg_ctl.conf.j2
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_ctl.conf"
+    owner: "{{ postgresql__system_user }}"
+    group: "{{ postgresql__system_group }}"
+    mode: "0644"
+  become: true
+  notify:
+    - Restart postgresql service
+  tags:
+    - configure

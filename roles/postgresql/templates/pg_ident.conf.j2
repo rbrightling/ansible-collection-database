@@ -1,0 +1,5 @@
+{{ ansible_managed | comment }}
+# MAPNAME       SYSTEM-USERNAME         PG-USERNAME
+{% for map in postgresql_ident_mapping %}
+{{ "%-15s" | format(map.mapname) }} {{ "%-23s" | format(map.system_username) }} {{ map.pg_username }}
+{% endfor %}

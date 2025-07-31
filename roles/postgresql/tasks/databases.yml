@@ -1,0 +1,85 @@
+---
+- name: Create templates
+  community.postgresql.postgresql_db:
+    name: "template_{{ item.name }}"
+    lc_collate: "{{ item.lc_collate | default(postgresql_database_lc_collate) }}"
+    lc_ctype: "{{ item.lc_ctype | default(postgresql_database_lc_ctype) }}"
+    encoding: "{{ item.encoding | default(postgresql_database_encoding) }}"
+    template: "{{ item.template | default('template0') }}"
+    owner: "{{ item.owner | default(postgresql__system_user) }}"
+    login_host: "{{ postgresql_login_host | default(omit) }}"
+    login_password: "{{ postgresql_login_password | default(omit) }}"
+    login_user: "{{ postgresql_login_user | default(postgresql__system_user) }}"
+    login_unix_socket: "{{ postgresql_login_unix_socket | default(postgresql_unix_socket_directories) }}"
+    port: "{{ postgresql_login_port if postgresql_login_port else omit }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ postgresql_templates }}"
+  become: true
+  become_user: "{{ postgresql__system_user }}"
+
+- name: Template Extensions
+  community.postgresql.postgresql_ext:
+    name: "{{ item.1 }}"
+    db: "template_{{ item.0.name }}"
+    login_host: "{{ postgresql_login_host | default(omit) }}"
+    login_password: "{{ postgresql_login_password | default(omit) }}"
+    login_user: "{{ postgresql_login_user | default(postgresql__system_user) }}"
+    login_unix_socket: "{{ postgresql_login_unix_socket | default(postgresql_unix_socket_directories) }}"
+    port: "{{ postgresql_login_port if postgresql_login_port else omit }}"
+    state: present
+  loop: "{{ postgresql_templates | subelements('extensions', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item[0].name }} -> {{ item[1] }}"
+  become: true
+  become_user: "{{ postgresql__system_user }}"
+
+- name: Create databases
+  community.postgresql.postgresql_db:
+    name: "{{ item.name }}"
+    lc_collate: "{{ item.lc_collate | default(postgresql_database_lc_collate) }}"
+    lc_ctype: "{{ item.lc_ctype | default(postgresql_database_lc_ctype) }}"
+    encoding: "{{ item.encoding | default(postgresql_database_encoding) }}"
+    template: "{{ item.template | default(postgresql_database_template) }}"
+    owner: "{{ item.owner | default(postgresql__system_user) }}"
+    login_host: "{{ postgesql_login_host | default(omit) }}"
+    login_password: "{{ postgresql_login_password | default(omit) }}"
+    login_user: "{{ postgresql_login_user | default(postgresql__system_user) }}"
+    login_unix_socket: "{{ postgresql_login_unix_socket | default(postgresql_unix_socket_directories) }}"
+    port: "{{ postgresql_login_port if postgresql_login_port else omit }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ postgresql_databases }}"
+  become: true
+  become_user: "{{ postgresql__system_user }}"
+
+- name: Database Extensions
+  community.postgresql.postgresql_ext:
+    name: "{{ item.1 }}"
+    db: "{{ item.0.name }}"
+    login_host: "{{ postgresql_login_host | default(omit) }}"
+    login_password: "{{ postgresql_login_password | default(omit) }}"
+    login_user: "{{ postgresql_login_user | default(postgresql__system_user) }}"
+    login_unix_socket: "{{ postgresql_login_unix_socket | default(postgresql_unix_socket_directories) }}"
+    port: "{{ postgresql_login_port if postgresql_login_port else omit }}"
+    state: present
+  loop: "{{ postgresql_databases | subelements('extensions', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item[0].name }} -> {{ item[1] }}"
+  become: true
+  become_user: "{{ postgresql__system_user }}"
+
+- name: Database Schema
+  community.postgresql.postgresql_schema:
+    name: "{{ item.1.name }}"
+    db: "{{ item.0.name }}"
+    owner: "{{ item.1.owner | default(omit) }}"
+    login_host: "{{ postgresql_login_host | default('localhost') }}"
+    login_password: "{{ postgresql_login_password | default(omit) }}"
+    login_user: "{{ postgresql_login_user | default(postgresql__system_user) }}"
+    login_unix_socket: "{{ postgresql_login_unix_socket | default(postgresql_unix_socket_directories) }}"
+    port: "{{ postgresql_login_port if postgresql_login_port else omit }}"
+    state: "{{ item.1.state | default('present') }}"
+  loop: "{{ postgresql_databases | subelements('schemas', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item[0].name }} -> {{ item[1] }}"
+  become: true
+  become_user: "{{ postgresql__system_user }}"

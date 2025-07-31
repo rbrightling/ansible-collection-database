@@ -1,0 +1,27 @@
+{{ ansible_managed | comment }}
+# TYPE  DATABASE        USER            ADDRESS                 METHOD                                                
+# Database administrative login by Unix domain socket                                                                 
+local   all             postgres                                peer                                                  
+{% if postgresql_hba_allow_local_socket_connection %}
+# "local" is for Unix domain socket connections only                                                                  
+local   all             all                                     peer                                                  
+{% endif %}
+{% if postgresql_hba_allow_local_ipv4_connection %}
+# IPv4 local connections:                                                                                             
+host    all             all             127.0.0.1/32            scram-sha-256                                         
+{% endif %}
+{% if postgresql_hba_allow_local_ipv6_connection %}
+# IPv6 local connections:                                                                                             
+host    all             all             ::1/128                 scram-sha-256                                         
+{% endif %}
+{% if postgresql_hba_allow_local_replication %}
+# Allow replication connections from localhost, by a user with the                                                    
+# replication privilege.               
+local   replication     all                                     peer                                                  
+host    replication     all             127.0.0.1/32            scram-sha-256                                         
+host    replication     all             ::1/128                 scram-sha-256
+{% endif %}
+# Custom Authentications
+{% for auth in postgresql_hba_authentication %}
+{{ "%-7s" | format(auth.type) }} {{ "%-15s" | format(auth.database) }} {{ "%-15s" | format(auth.user) }} {{ "%-23s" | format( auth.address|default("")) }} {{ auth.method }}
+{% endfor %}

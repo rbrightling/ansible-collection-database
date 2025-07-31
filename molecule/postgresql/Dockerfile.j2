@@ -1,0 +1,22 @@
+
+FROM {{ item.image }}
+
+RUN if [ $(command -v apt-get) ]; then apt-get update && apt-get install -y systemd && apt-get clean; \
+    fi
+
+RUN echo '[Unit] \n\
+Description=NFS server and services \n\
+DefaultDependencies=no \n\
+\n\
+[Service] \n\
+Type=oneshot \n\
+RemainAfterExit=yes \n\
+ExecStartPre=-/usr/sbin/exportfs -r \n\
+ExecStart=/bin/bash \n\
+ExecReload=-/usr/sbin/exportfs -r \n\
+\n\
+[Install] \n\
+WantedBy=multi-user.target \
+' > /etc/systemd/system/nfs-server.service
+VOLUME ["/sys/fs/cgroup"]
+CMD ["/lib/systemd/systemd"]
