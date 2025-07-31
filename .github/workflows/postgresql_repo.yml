@@ -1,0 +1,16 @@
+---
+name: "rbrightling.system.postgresql_repo"
+
+on:
+  push:
+    paths:
+      - 'roles/postgresql_repo/**'
+      - 'molecule/postgresql_repo/**'
+      - '.github/workflows/postgresql_repo.yml'
+      - 'tox.ini'
+
+jobs:
+  call_reusable_workflow:
+    uses: ./.github/workflows/reusable-ansible-test-role.yml
+    with:
+      role-name: 'postgresql_repo'
