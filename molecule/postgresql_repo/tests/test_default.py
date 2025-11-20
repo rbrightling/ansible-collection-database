@@ -8,6 +8,6 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_postgresql_repo_file(host):
-    postgresql_repo_file_path = "/etc/apt/sources.list.d/pgdg.list"
+    postgresql_repo_file_path = "/etc/apt/sources.list.d/pgdg.sources"
     postgresql_repo_file = host.file(postgresql_repo_file_path)
     assert postgresql_repo_file.exists
