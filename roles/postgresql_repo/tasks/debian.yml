@@ -8,15 +8,16 @@
       - ca-certificates
       - gnupg
     state: present
-
-- name: "Repository | Add PGDG APT GPG key"
-  ansible.builtin.apt_key:
-    url: "{{ postgresql_repo_apt_key_url }}"
-    state: present
+  become: true
 
 - name: "Repository | Add PGDG APT repository"
-  ansible.builtin.apt_repository:
-    repo: "{{ postgresql_repo_repository }}"
-    filename: "pgdg"
+  ansible.builtin.deb822_repository:
+    name: "pgdg"
+    types: "deb"
+    suites: "{{ postgresql_repo_suites }}"
+    uris: "{{ postgresql_repo_uris }}"
+    components: "main"
+    signed_by: "{{ postgresql_repo_key_url }}"
     state: present
-    update_cache: true
+    enabled: true
+  become: true
