@@ -28,7 +28,7 @@ jobs:
         ansible:
           - ansible218
         distro:
-          - debian12
+          - debian13
     steps:
       - name: Checkout collection
         uses: actions/checkout@v4
