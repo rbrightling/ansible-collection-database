@@ -1,0 +1,397 @@
+{{ ansible_managed | comment }}
+{% import 'macros.j2' as postgresql_macros with context %}
+# -----------------------------
+# PostgreSQL configuration file
+# -----------------------------
+#
+#------------------------------------------------------------------------------
+# FILE LOCATIONS
+#------------------------------------------------------------------------------
+{{ postgresql_macros.postgresql_conf_format("data_directory", postgresql_data_directory) -}}
+{{ postgresql_macros.postgresql_conf_format("hba_file", postgresql_hba_file) -}}
+{{ postgresql_macros.postgresql_conf_format("ident_file", postgresql_ident_file) -}}
+{{ postgresql_macros.postgresql_conf_format("external_pid_file", postgresql_external_pid_file) -}}
+#------------------------------------------------------------------------------
+# CONNECTIONS AND AUTHENTICATION
+#------------------------------------------------------------------------------
+# - Connection Settings -
+{{ postgresql_macros.postgresql_conf_format("listen_addresses", postgresql_listen_addresses) -}}
+{{ postgresql_macros.postgresql_conf_format("port", postgresql_port) -}}
+{{ postgresql_macros.postgresql_conf_format("max_connections", postgresql_max_connections) -}}
+{{ postgresql_macros.postgresql_conf_format("superuser_reserved_connections", postgresql_superuser_reserved_connections) -}}
+{{ postgresql_macros.postgresql_conf_format("unix_socket_directories", postgresql_unix_socket_directories) -}}
+{{ postgresql_macros.postgresql_conf_format("unix_socket_group", postgresql_unix_socket_group) -}}
+{{ postgresql_macros.postgresql_conf_format("unix_socket_permissions", postgresql_unix_socket_permissions) -}}
+{{ postgresql_macros.postgresql_conf_format("bonjour", postgresql_bonjour) -}}
+{{ postgresql_macros.postgresql_conf_format("bonjour_name", postgresql_bonjour_name) -}}
+# - TCP settings -
+{{ postgresql_macros.postgresql_conf_format("tcp_keepalives_idle", postgresql_tcp_keepalives_idle) -}}
+{{ postgresql_macros.postgresql_conf_format("tcp_keepalives_interval", postgresql_tcp_keepalives_interval) -}}
+{{ postgresql_macros.postgresql_conf_format("tcp_keepalives_count", postgresql_tcp_keepalives_count) -}}
+{{ postgresql_macros.postgresql_conf_format("tcp_user_timeout", postgresql_tcp_user_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("client_connection_check_interval", postgresql_client_connection_check_interval) -}}
+# - Authentication -
+{{ postgresql_macros.postgresql_conf_format("authentication_timeout", postgresql_authentication_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("password_encryption", postgresql_password_encryption) -}}
+{{ postgresql_macros.postgresql_conf_format("db_user_namespace", postgresql_db_user_namespace) -}}
+# GSSAPI using Kerberos
+{{ postgresql_macros.postgresql_conf_format("krb_server_keyfile", postgresql_krb_server_keyfile) -}}
+{{ postgresql_macros.postgresql_conf_format("krb_caseins_users", postgresql_krb_caseins_users) -}}
+# - SSL -
+{{ postgresql_macros.postgresql_conf_format("ssl", postgresql_ssl) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_ca_file", postgresql_ssl_ca_file) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_cert_file", postgresql_ssl_cert_file) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_crl_file", postgresql_ssl_crl_file) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_crl_dir", postgresql_ssl_crl_dir) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_key_file", postgresql_ssl_key_file) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_ciphers", postgresql_ssl_ciphers) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_prefer_server_ciphers", postgresql_ssl_prefer_server_ciphers) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_ecdh_curve", postgresql_ssl_ecdh_curve) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_min_protocol_version", postgresql_ssl_min_protocol_version) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_max_protocol_version", postgresql_ssl_max_protocol_version) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_dh_params_file", postgresql_ssl_dh_params_file) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_passphrase_command", postgresql_ssl_passphrase_command) -}}
+{{ postgresql_macros.postgresql_conf_format("ssl_passphrase_command_supports_reload", postgresql_ssl_passphrase_command_supports_reload) -}}
+#------------------------------------------------------------------------------
+# RESOURCE USAGE (except WAL)
+#------------------------------------------------------------------------------
+# - Memory -
+{{ postgresql_macros.postgresql_conf_format("shared_buffers", postgresql_shared_buffers) -}}
+{{ postgresql_macros.postgresql_conf_format("huge_pages", postgresql_huge_pages) -}}
+{{ postgresql_macros.postgresql_conf_format("huge_page_size", postgresql_huge_page_size) -}}
+{{ postgresql_macros.postgresql_conf_format("temp_buffers", postgresql_temp_buffers) -}}
+{{ postgresql_macros.postgresql_conf_format("max_prepared_transactions", postgresql_max_prepared_transactions) -}}
+{{ postgresql_macros.postgresql_conf_format("work_mem", postgresql_work_mem) -}}
+{{ postgresql_macros.postgresql_conf_format("hash_mem_multiplier", postgresql_hash_mem_multiplier) -}}
+{{ postgresql_macros.postgresql_conf_format("maintenance_work_mem", postgresql_maintenance_work_mem) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_work_mem", postgresql_autovacuum_work_mem) -}}
+{{ postgresql_macros.postgresql_conf_format("logical_decoding_work_mem", postgresql_logical_decoding_work_mem) -}}
+{{ postgresql_macros.postgresql_conf_format("max_stack_depth", postgresql_max_stack_depth) -}}
+{{ postgresql_macros.postgresql_conf_format("shared_memory_type", postgresql_shared_memory_type) -}}
+{{ postgresql_macros.postgresql_conf_format("dynamic_shared_memory_type", postgresql_dynamic_shared_memory_type) -}}
+{{ postgresql_macros.postgresql_conf_format("min_dynamic_shared_memory", postgresql_min_dynamic_shared_memory) -}}
+# - Disk -
+{{ postgresql_macros.postgresql_conf_format("temp_file_limit", postgresql_temp_file_limit) -}}
+# - Kernel Resources -
+{{ postgresql_macros.postgresql_conf_format("max_files_per_process", postgresql_max_files_per_process) -}}
+# - Cost-Based Vacuum Delay -
+{{ postgresql_macros.postgresql_conf_format("vacuum_cost_delay", postgresql_vacuum_cost_delay) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_cost_page_hit", postgresql_vacuum_cost_page_hit) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_cost_page_miss", postgresql_vacuum_cost_page_miss) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_cost_page_dirty", postgresql_vacuum_cost_page_dirty) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_cost_limit", postgresql_vacuum_cost_limit) -}}
+# - Background Writer -
+{{ postgresql_macros.postgresql_conf_format("bgwriter_delay", postgresql_bgwriter_delay) -}}
+{{ postgresql_macros.postgresql_conf_format("bgwriter_lru_maxpages", postgresql_bgwriter_lru_maxpages) -}}
+{{ postgresql_macros.postgresql_conf_format("bgwriter_lru_multiplier", postgresql_bgwriter_lru_multiplier) -}}
+{{ postgresql_macros.postgresql_conf_format("bgwriter_flush_after", postgresql_bgwriter_flush_after) -}}
+# - Asynchronous Behavior -
+{{ postgresql_macros.postgresql_conf_format("backend_flush_after", postgresql_backend_flush_after) -}}
+{{ postgresql_macros.postgresql_conf_format("effective_io_concurrency", postgresql_effective_io_concurrency) -}}
+{{ postgresql_macros.postgresql_conf_format("maintenance_io_concurrency", postgresql_maintenance_io_concurrency) -}}
+{{ postgresql_macros.postgresql_conf_format("max_worker_processes", postgresql_max_worker_processes) -}}
+{{ postgresql_macros.postgresql_conf_format("max_parallel_workers_per_gather", postgresql_max_parallel_workers_per_gather) -}}
+{{ postgresql_macros.postgresql_conf_format("max_parallel_maintenance_workers", postgresql_max_parallel_maintenance_workers) -}}
+{{ postgresql_macros.postgresql_conf_format("max_parallel_workers", postgresql_max_parallel_workers) -}}
+{{ postgresql_macros.postgresql_conf_format("parallel_leader_participation", postgresql_parallel_leader_participation) -}}
+{{ postgresql_macros.postgresql_conf_format("old_snapshot_threshold", postgresql_old_snapshot_threshold) -}}
+#------------------------------------------------------------------------------
+# WRITE-AHEAD LOG
+#------------------------------------------------------------------------------
+# - Settings -
+{{ postgresql_macros.postgresql_conf_format("wal_level", postgresql_wal_level) -}}
+{{ postgresql_macros.postgresql_conf_format("fsync", postgresql_fsync) -}}
+{{ postgresql_macros.postgresql_conf_format("synchronous_commit", postgresql_synchronous_commit) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_sync_method", postgresql_wal_sync_method) -}}
+{{ postgresql_macros.postgresql_conf_format("full_page_writes", postgresql_full_page_writes) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_log_hints", postgresql_wal_log_hints) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_compression", postgresql_wal_compression) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_init_zero", postgresql_wal_init_zero) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_recycle", postgresql_wal_recycle) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_buffers", postgresql_wal_buffers) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_writer_delay", postgresql_wal_writer_delay) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_writer_flush_after", postgresql_wal_writer_flush_after) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_skip_threshold", postgresql_wal_skip_threshold) -}}
+{{ postgresql_macros.postgresql_conf_format("commit_delay", postgresql_commit_delay) -}}
+{{ postgresql_macros.postgresql_conf_format("commit_siblings", postgresql_commit_siblings) -}}
+# - Checkpoints -
+{{ postgresql_macros.postgresql_conf_format("checkpoint_timeout", postgresql_checkpoint_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("checkpoint_completion_target", postgresql_checkpoint_completion_target) -}}
+{{ postgresql_macros.postgresql_conf_format("checkpoint_flush_after", postgresql_checkpoint_flush_after) -}}
+{{ postgresql_macros.postgresql_conf_format("checkpoint_warning", postgresql_checkpoint_warning) -}}
+{{ postgresql_macros.postgresql_conf_format("max_wal_size", postgresql_max_wal_size) -}}
+{{ postgresql_macros.postgresql_conf_format("min_wal_size", postgresql_min_wal_size) -}}
+# - Prefetching during recovery -
+{{ postgresql_macros.postgresql_conf_format("recovery_prefetch", postgresql_recovery_prefetch) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_decode_buffer_size", postgresql_wal_decode_buffer_size) -}}
+# - Archiving -
+{{ postgresql_macros.postgresql_conf_format("archive_mode", postgresql_archive_mode) -}}
+{{ postgresql_macros.postgresql_conf_format("archive_library", postgresql_archive_library) -}}
+{{ postgresql_macros.postgresql_conf_format("archive_command", postgresql_archive_command) -}}
+{{ postgresql_macros.postgresql_conf_format("archive_timeout", postgresql_archive_timeout) -}}
+# - Archive Recovery -
+{{ postgresql_macros.postgresql_conf_format("restore_command", postgresql_restore_command) -}}
+{{ postgresql_macros.postgresql_conf_format("archive_cleanup_command", postgresql_archive_cleanup_command) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_end_command", postgresql_recovery_end_command) -}}
+# - Recovery Target -
+{{ postgresql_macros.postgresql_conf_format("recovery_target", postgresql_recovery_target) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_target_name", postgresql_recovery_target_name) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_target_time", postgresql_recovery_target_time) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_target_xid", postgresql_recovery_target_xid) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_target_lsn", postgresql_recovery_target_lsn) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_target_inclusive", postgresql_recovery_target_inclusive) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_target_timeline", postgresql_recovery_target_timeline) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_target_action", postgresql_recovery_target_action) -}}
+#------------------------------------------------------------------------------
+# REPLICATION
+#------------------------------------------------------------------------------
+# - Sending Servers -
+{{ postgresql_macros.postgresql_conf_format("max_wal_senders", postgresql_max_wal_senders) -}}
+{{ postgresql_macros.postgresql_conf_format("max_replication_slots", postgresql_max_replication_slots) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_keep_size", postgresql_wal_keep_size) -}}
+{{ postgresql_macros.postgresql_conf_format("max_slot_wal_keep_size", postgresql_max_slot_wal_keep_size) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_sender_timeout", postgresql_wal_sender_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("track_commit_timestamp", postgresql_track_commit_timestamp) -}}
+# - Primary Server -
+{{ postgresql_macros.postgresql_conf_format("synchronous_standby_names", postgresql_synchronous_standby_names) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_defer_cleanup_age", postgresql_vacuum_defer_cleanup_age) -}}
+# - Standby Servers -
+{{ postgresql_macros.postgresql_conf_format("primary_conninfo", postgresql_primary_conninfo) -}}
+{{ postgresql_macros.postgresql_conf_format("primary_slot_name", postgresql_primary_slot_name) -}}
+{{ postgresql_macros.postgresql_conf_format("promote_trigger_file", postgresql_promote_trigger_file) -}}
+{{ postgresql_macros.postgresql_conf_format("hot_standby", postgresql_hot_standby) -}}
+{{ postgresql_macros.postgresql_conf_format("max_standby_archive_delay", postgresql_max_standby_archive_delay) -}}
+{{ postgresql_macros.postgresql_conf_format("max_standby_streaming_delay", postgresql_max_standby_streaming_delay) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_receiver_create_temp_slot", postgresql_wal_receiver_create_temp_slot) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_receiver_status_interval", postgresql_wal_receiver_status_interval) -}}
+{{ postgresql_macros.postgresql_conf_format("hot_standby_feedback", postgresql_hot_standby_feedback) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_receiver_timeout", postgresql_wal_receiver_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("wal_retrieve_retry_interval", postgresql_wal_retrieve_retry_interval) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_min_apply_delay", postgresql_recovery_min_apply_delay) -}}
+# - Subscribers -
+{{ postgresql_macros.postgresql_conf_format("max_logical_replication_workers", postgresql_max_logical_replication_workers) -}}
+{{ postgresql_macros.postgresql_conf_format("max_sync_workers_per_subscription", postgresql_max_sync_workers_per_subscription) -}}
+#------------------------------------------------------------------------------
+# QUERY TUNING
+#------------------------------------------------------------------------------
+# - Planner Method Configuration -
+{{ postgresql_macros.postgresql_conf_format("enable_async_append", postgresql_enable_async_append) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_bitmapscan", postgresql_enable_bitmapscan) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_gathermerge", postgresql_enable_gathermerge) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_hashagg", postgresql_enable_hashagg) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_hashjoin", postgresql_enable_hashjoin) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_incremental_sort", postgresql_enable_incremental_sort) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_indexscan", postgresql_enable_indexscan) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_indexonlyscan", postgresql_enable_indexonlyscan) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_material", postgresql_enable_material) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_memoize", postgresql_enable_memoize) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_mergejoin", postgresql_enable_mergejoin) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_nestloop", postgresql_enable_nestloop) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_parallel_append", postgresql_enable_parallel_append) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_parallel_hash", postgresql_enable_parallel_hash) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_partition_pruning", postgresql_enable_partition_pruning) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_partitionwise_join", postgresql_enable_partitionwise_join) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_partitionwise_aggregate", postgresql_enable_partitionwise_aggregate) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_seqscan", postgresql_enable_seqscan) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_sort", postgresql_enable_sort) -}}
+{{ postgresql_macros.postgresql_conf_format("enable_tidscan", postgresql_enable_tidscan) -}}
+# - Planner Cost Constants -
+{{ postgresql_macros.postgresql_conf_format("seq_page_cost", postgresql_seq_page_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("random_page_cost", postgresql_random_page_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("cpu_tuple_cost", postgresql_cpu_tuple_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("cpu_index_tuple_cost", postgresql_cpu_index_tuple_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("cpu_operator_cost", postgresql_cpu_operator_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("parallel_setup_cost", postgresql_parallel_setup_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("parallel_tuple_cost", postgresql_parallel_tuple_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("min_parallel_table_scan_size", postgresql_min_parallel_table_scan_size) -}}
+{{ postgresql_macros.postgresql_conf_format("min_parallel_index_scan_size", postgresql_min_parallel_index_scan_size) -}}
+{{ postgresql_macros.postgresql_conf_format("effective_cache_size", postgresql_effective_cache_size) -}}
+{{ postgresql_macros.postgresql_conf_format("jit_above_cost", postgresql_jit_above_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("jit_inline_above_cost", postgresql_jit_inline_above_cost) -}}
+{{ postgresql_macros.postgresql_conf_format("jit_optimize_above_cost", postgresql_jit_optimize_above_cost) -}}
+# - Genetic Query Optimizer -
+{{ postgresql_macros.postgresql_conf_format("geqo", postgresql_geqo) -}}
+{{ postgresql_macros.postgresql_conf_format("geqo_threshold", postgresql_geqo_threshold) -}}
+{{ postgresql_macros.postgresql_conf_format("geqo_effort", postgresql_geqo_effort) -}}
+{{ postgresql_macros.postgresql_conf_format("geqo_pool_size", postgresql_geqo_pool_size) -}}
+{{ postgresql_macros.postgresql_conf_format("geqo_generations", postgresql_geqo_generations) -}}
+{{ postgresql_macros.postgresql_conf_format("geqo_selection_bias", postgresql_geqo_selection_bias) -}}
+{{ postgresql_macros.postgresql_conf_format("geqo_seed", postgresql_geqo_seed) -}}
+# - Other Planner Options -
+{{ postgresql_macros.postgresql_conf_format("default_statistics_target", postgresql_default_statistics_target) -}}
+{{ postgresql_macros.postgresql_conf_format("constraint_exclusion", postgresql_constraint_exclusion) -}}
+{{ postgresql_macros.postgresql_conf_format("cursor_tuple_fraction", postgresql_cursor_tuple_fraction) -}}
+{{ postgresql_macros.postgresql_conf_format("from_collapse_limit", postgresql_from_collapse_limit) -}}
+{{ postgresql_macros.postgresql_conf_format("jit", postgresql_jit) -}}
+{{ postgresql_macros.postgresql_conf_format("join_collapse_limit", postgresql_join_collapse_limit) -}}
+{{ postgresql_macros.postgresql_conf_format("plan_cache_mode", postgresql_plan_cache_mode) -}}
+{{ postgresql_macros.postgresql_conf_format("recursive_worktable_factor", postgresql_recursive_worktable_factor) -}}
+#------------------------------------------------------------------------------
+# REPORTING AND LOGGING
+#------------------------------------------------------------------------------
+# - Where to Log -
+{{ postgresql_macros.postgresql_conf_format("log_destination", postgresql_log_destination) -}}
+{{ postgresql_macros.postgresql_conf_format("logging_collector", postgresql_logging_collector) -}}
+{{ postgresql_macros.postgresql_conf_format("log_directory", postgresql_log_directory) -}}
+{{ postgresql_macros.postgresql_conf_format("log_filename", postgresql_log_filename) -}}
+{{ postgresql_macros.postgresql_conf_format("log_file_mode", postgresql_log_file_mode) -}}
+{{ postgresql_macros.postgresql_conf_format("log_rotation_age", postgresql_log_rotation_age) -}}
+{{ postgresql_macros.postgresql_conf_format("log_rotation_size", postgresql_log_rotation_size) -}}
+{{ postgresql_macros.postgresql_conf_format("log_truncate_on_rotation", postgresql_log_truncate_on_rotation) -}}
+{{ postgresql_macros.postgresql_conf_format("syslog_facility", postgresql_syslog_facility) -}}
+{{ postgresql_macros.postgresql_conf_format("syslog_ident", postgresql_syslog_ident) -}}
+{{ postgresql_macros.postgresql_conf_format("syslog_sequence_numbers", postgresql_syslog_sequence_numbers) -}}
+{{ postgresql_macros.postgresql_conf_format("syslog_split_messages", postgresql_syslog_split_messages) -}}
+{{ postgresql_macros.postgresql_conf_format("event_source", postgresql_event_source) -}}
+# - When to Log -
+{{ postgresql_macros.postgresql_conf_format("log_min_messages", postgresql_log_min_messages) -}}
+{{ postgresql_macros.postgresql_conf_format("log_min_error_statement", postgresql_log_min_error_statement) -}}
+{{ postgresql_macros.postgresql_conf_format("log_min_duration_statement", postgresql_log_min_duration_statement) -}}
+{{ postgresql_macros.postgresql_conf_format("log_min_duration_sample", postgresql_log_min_duration_sample) -}}
+{{ postgresql_macros.postgresql_conf_format("log_statement_sample_rate", postgresql_log_statement_sample_rate) -}}
+{{ postgresql_macros.postgresql_conf_format("log_transaction_sample_rate", postgresql_log_transaction_sample_rate) -}}
+{{ postgresql_macros.postgresql_conf_format("log_startup_progress_interval", postgresql_log_startup_progress_interval) -}}
+# - What to Log -
+{{ postgresql_macros.postgresql_conf_format("debug_print_parse", postgresql_debug_print_parse) -}}
+{{ postgresql_macros.postgresql_conf_format("debug_print_rewritten", postgresql_debug_print_rewritten) -}}
+{{ postgresql_macros.postgresql_conf_format("debug_print_plan", postgresql_debug_print_plan) -}}
+{{ postgresql_macros.postgresql_conf_format("debug_pretty_print", postgresql_debug_pretty_print) -}}
+{{ postgresql_macros.postgresql_conf_format("log_autovacuum_min_duration", postgresql_log_autovacuum_min_duration) -}}
+{{ postgresql_macros.postgresql_conf_format("log_checkpoints", postgresql_log_checkpoints) -}}
+{{ postgresql_macros.postgresql_conf_format("log_connections", postgresql_log_connections) -}}
+{{ postgresql_macros.postgresql_conf_format("log_disconnections", postgresql_log_disconnections) -}}
+{{ postgresql_macros.postgresql_conf_format("log_duration", postgresql_log_duration) -}}
+{{ postgresql_macros.postgresql_conf_format("log_error_verbosity", postgresql_log_error_verbosity) -}}
+{{ postgresql_macros.postgresql_conf_format("log_hostname", postgresql_log_hostname) -}}
+{{ postgresql_macros.postgresql_conf_format("log_line_prefix", postgresql_log_line_prefix) -}}
+{{ postgresql_macros.postgresql_conf_format("log_lock_waits", postgresql_log_lock_waits) -}}
+{{ postgresql_macros.postgresql_conf_format("log_recovery_conflict_waits", postgresql_log_recovery_conflict_waits) -}}
+{{ postgresql_macros.postgresql_conf_format("log_parameter_max_length", postgresql_log_parameter_max_length) -}}
+{{ postgresql_macros.postgresql_conf_format("log_parameter_max_length_on_error", postgresql_log_parameter_max_length_on_error) -}}
+{{ postgresql_macros.postgresql_conf_format("log_statement", postgresql_log_statement) -}}
+{{ postgresql_macros.postgresql_conf_format("log_replication_commands", postgresql_log_replication_commands) -}}
+{{ postgresql_macros.postgresql_conf_format("log_temp_files", postgresql_log_temp_files) -}}
+{{ postgresql_macros.postgresql_conf_format("log_timezone", postgresql_log_timezone) -}}
+#------------------------------------------------------------------------------
+# PROCESS TITLE
+#------------------------------------------------------------------------------
+{{ postgresql_macros.postgresql_conf_format("cluster_name", postgresql_cluster_name) -}}
+{{ postgresql_macros.postgresql_conf_format("update_process_title", postgresql_update_process_title) -}}
+#------------------------------------------------------------------------------
+# STATISTICS
+#------------------------------------------------------------------------------
+# - Cumulative Query and Index Statistics -
+{{ postgresql_macros.postgresql_conf_format("track_activities", postgresql_track_activities) -}}
+{{ postgresql_macros.postgresql_conf_format("track_activity_query_size", postgresql_track_activity_query_size) -}}
+{{ postgresql_macros.postgresql_conf_format("track_counts", postgresql_track_counts) -}}
+{{ postgresql_macros.postgresql_conf_format("track_io_timing", postgresql_track_io_timing) -}}
+{{ postgresql_macros.postgresql_conf_format("track_wal_io_timing", postgresql_track_wal_io_timing) -}}
+{{ postgresql_macros.postgresql_conf_format("track_functions", postgresql_track_functions) -}}
+{{ postgresql_macros.postgresql_conf_format("stats_fetch_consistency", postgresql_stats_fetch_consistency) -}}
+# - Monitoring -
+{{ postgresql_macros.postgresql_conf_format("compute_query_id", postgresql_compute_query_id) -}}
+{{ postgresql_macros.postgresql_conf_format("log_statement_stats", postgresql_log_statement_stats) -}}
+{{ postgresql_macros.postgresql_conf_format("log_parser_stats", postgresql_log_parser_stats) -}}
+{{ postgresql_macros.postgresql_conf_format("log_planner_stats", postgresql_log_planner_stats) -}}
+{{ postgresql_macros.postgresql_conf_format("log_executor_stats", postgresql_log_executor_stats) -}}
+#------------------------------------------------------------------------------
+# AUTOVACUUM
+#------------------------------------------------------------------------------
+{{ postgresql_macros.postgresql_conf_format("autovacuum", postgresql_autovacuum) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_max_workers", postgresql_autovacuum_max_workers) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_naptime", postgresql_autovacuum_naptime) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_vacuum_threshold", postgresql_autovacuum_vacuum_threshold) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_vacuum_insert_threshold", postgresql_autovacuum_vacuum_insert_threshold) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_analyze_threshold", postgresql_autovacuum_analyze_threshold) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_vacuum_scale_factor", postgresql_autovacuum_vacuum_scale_factor) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_vacuum_insert_scale_factor", postgresql_autovacuum_vacuum_insert_scale_factor) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_analyze_scale_factor", postgresql_autovacuum_analyze_scale_factor) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_freeze_max_age", postgresql_autovacuum_freeze_max_age) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_multixact_freeze_max_age", postgresql_autovacuum_multixact_freeze_max_age) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_vacuum_cost_delay", postgresql_autovacuum_vacuum_cost_delay) -}}
+{{ postgresql_macros.postgresql_conf_format("autovacuum_vacuum_cost_limit", postgresql_autovacuum_vacuum_cost_limit) -}}
+#------------------------------------------------------------------------------
+# CLIENT CONNECTION DEFAULTS
+#------------------------------------------------------------------------------
+# - Statement Behavior -
+{{ postgresql_macros.postgresql_conf_format("client_min_messages", postgresql_client_min_messages) -}}
+{{ postgresql_macros.postgresql_conf_format("search_path", postgresql_search_path) -}}
+{{ postgresql_macros.postgresql_conf_format("row_security", postgresql_row_security) -}}
+{{ postgresql_macros.postgresql_conf_format("default_table_access_method", postgresql_default_table_access_method) -}}
+{{ postgresql_macros.postgresql_conf_format("default_tablespace", postgresql_default_tablespace) -}}
+{{ postgresql_macros.postgresql_conf_format("default_toast_compression", postgresql_default_toast_compression) -}}
+{{ postgresql_macros.postgresql_conf_format("temp_tablespaces", postgresql_temp_tablespaces) -}}
+{{ postgresql_macros.postgresql_conf_format("check_function_bodies", postgresql_check_function_bodies) -}}
+{{ postgresql_macros.postgresql_conf_format("default_transaction_isolation", postgresql_default_transaction_isolation) -}}
+{{ postgresql_macros.postgresql_conf_format("default_transaction_read_only", postgresql_default_transaction_read_only) -}}
+{{ postgresql_macros.postgresql_conf_format("default_transaction_deferrable", postgresql_default_transaction_deferrable) -}}
+{{ postgresql_macros.postgresql_conf_format("session_replication_role", postgresql_session_replication_role) -}}
+{{ postgresql_macros.postgresql_conf_format("statement_timeout", postgresql_statement_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("lock_timeout", postgresql_lock_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("idle_in_transaction_session_timeout", postgresql_idle_in_transaction_session_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("idle_session_timeout", postgresql_idle_session_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_freeze_table_age", postgresql_vacuum_freeze_table_age) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_freeze_min_age", postgresql_vacuum_freeze_min_age) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_failsafe_age", postgresql_vacuum_failsafe_age) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_multixact_freeze_table_age", postgresql_vacuum_multixact_freeze_table_age) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_multixact_freeze_min_age", postgresql_vacuum_multixact_freeze_min_age) -}}
+{{ postgresql_macros.postgresql_conf_format("vacuum_multixact_failsafe_age", postgresql_vacuum_multixact_failsafe_age) -}}
+{{ postgresql_macros.postgresql_conf_format("bytea_output", postgresql_bytea_output) -}}
+{{ postgresql_macros.postgresql_conf_format("xmlbinary", postgresql_xmlbinary) -}}
+{{ postgresql_macros.postgresql_conf_format("xmloption", postgresql_xmloption) -}}
+{{ postgresql_macros.postgresql_conf_format("gin_pending_list_limit", postgresql_gin_pending_list_limit) -}}
+# - Locale and Formatting -
+{{ postgresql_macros.postgresql_conf_format("datestyle", postgresql_datestyle) -}}
+{{ postgresql_macros.postgresql_conf_format("intervalstyle", postgresql_intervalstyle) -}}
+{{ postgresql_macros.postgresql_conf_format("timezone", postgresql_timezone) -}}
+{{ postgresql_macros.postgresql_conf_format("timezone_abbreviations", postgresql_timezone_abbreviations) -}}
+{{ postgresql_macros.postgresql_conf_format("extra_float_digits", postgresql_extra_float_digits) -}}
+{{ postgresql_macros.postgresql_conf_format("client_encoding", postgresql_client_encoding) -}}
+{{ postgresql_macros.postgresql_conf_format("lc_messages", postgresql_lc_messages) -}}
+{{ postgresql_macros.postgresql_conf_format("lc_monetary", postgresql_lc_monetary) -}}
+{{ postgresql_macros.postgresql_conf_format("lc_numeric", postgresql_lc_numeric) -}}
+{{ postgresql_macros.postgresql_conf_format("lc_time", postgresql_lc_time) -}}
+{{ postgresql_macros.postgresql_conf_format("default_text_search_config", postgresql_default_text_search_config) -}}
+# - Shared Library Preloading -
+{{ postgresql_macros.postgresql_conf_format("local_preload_libraries", postgresql_local_preload_libraries) -}}
+{{ postgresql_macros.postgresql_conf_format("session_preload_libraries", postgresql_session_preload_libraries) -}}
+{{ postgresql_macros.postgresql_conf_format("shared_preload_libraries", postgresql__shared_preload_libraries) -}}
+{{ postgresql_macros.postgresql_conf_format("jit_provider", postgresql_jit_provider) -}}
+# - Other Defaults -
+{{ postgresql_macros.postgresql_conf_format("dynamic_library_path", postgresql_dynamic_library_path) -}}
+{{ postgresql_macros.postgresql_conf_format("extension_destdir", postgresql_extension_destdir) -}}
+{{ postgresql_macros.postgresql_conf_format("gin_fuzzy_search_limit", postgresql_gin_fuzzy_search_limit) -}}
+#------------------------------------------------------------------------------
+# LOCK MANAGEMENT
+#------------------------------------------------------------------------------
+{{ postgresql_macros.postgresql_conf_format("deadlock_timeout", postgresql_deadlock_timeout) -}}
+{{ postgresql_macros.postgresql_conf_format("max_locks_per_transaction", postgresql_max_locks_per_transaction) -}}
+{{ postgresql_macros.postgresql_conf_format("max_pred_locks_per_transaction", postgresql_max_pred_locks_per_transaction) -}}
+{{ postgresql_macros.postgresql_conf_format("max_pred_locks_per_relation", postgresql_max_pred_locks_per_relation) -}}
+{{ postgresql_macros.postgresql_conf_format("max_pred_locks_per_page", postgresql_max_pred_locks_per_page) -}}
+#------------------------------------------------------------------------------
+# VERSION AND PLATFORM COMPATIBILITY
+#------------------------------------------------------------------------------
+# - Previous PostgreSQL Versions -
+{{ postgresql_macros.postgresql_conf_format("array_nulls", postgresql_array_nulls) -}}
+{{ postgresql_macros.postgresql_conf_format("backslash_quote", postgresql_backslash_quote) -}}
+{{ postgresql_macros.postgresql_conf_format("escape_string_warning", postgresql_escape_string_warning) -}}
+{{ postgresql_macros.postgresql_conf_format("lo_compat_privileges", postgresql_lo_compat_privileges) -}}
+{{ postgresql_macros.postgresql_conf_format("quote_all_identifiers", postgresql_quote_all_identifiers) -}}
+{{ postgresql_macros.postgresql_conf_format("standard_conforming_strings", postgresql_standard_conforming_strings) -}}
+{{ postgresql_macros.postgresql_conf_format("synchronize_seqscans", postgresql_synchronize_seqscans) -}}
+# - Other Platforms and Clients -
+{{ postgresql_macros.postgresql_conf_format("transform_null_equals", postgresql_transform_null_equals) -}}
+#------------------------------------------------------------------------------
+# ERROR HANDLING
+#------------------------------------------------------------------------------
+{{ postgresql_macros.postgresql_conf_format("exit_on_error", postgresql_exit_on_error) -}}
+{{ postgresql_macros.postgresql_conf_format("restart_after_crash", postgresql_restart_after_crash) -}}
+{{ postgresql_macros.postgresql_conf_format("data_sync_retry", postgresql_data_sync_retry) -}}
+{{ postgresql_macros.postgresql_conf_format("recovery_init_sync_method", postgresql_recovery_init_sync_method) -}}
+#------------------------------------------------------------------------------
+# CONFIG FILE INCLUDES
+#------------------------------------------------------------------------------
+{{ postgresql_macros.postgresql_conf_format("include_dir", postgresql_include_dir) -}}
+{{ postgresql_macros.postgresql_conf_format("include_if_exists", postgresql_include_if_exists) -}}
+{{ postgresql_macros.postgresql_conf_format("include", postgresql_include) -}}

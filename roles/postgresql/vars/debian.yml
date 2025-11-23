@@ -1,0 +1,3 @@
+---
+
+postgresql__recovery_init_sync_method: "syncfs"

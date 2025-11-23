@@ -1,0 +1,150 @@
+---
+
+# tasks file for postgresql
+- name: Include distro variables
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_distribution | lower }}.yml"
+        - "{{ ansible_os_family | lower }}.yml"
+        - default.yml
+      paths:
+        - '{{ playbook_dir }}/vars'
+        - '{{ role_path }}/vars'
+
+- name: Include postgresql version variables
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "postgresql_{{ postgresql_version }}.yml"
+        - "postgresql_default.yml"
+      paths:
+        - '{{ playbook_dir }}/vars'
+        - '{{ role_path }}/vars'
+
+
+- name: Install postgresql-common
+  ansible.builtin.package:
+    name: "{{ postgresql__pre_package }}"
+    state: present
+  become: true
+  tags:
+    - package
+
+- name: Configure createcluster conf
+  ansible.builtin.template:
+    src: createcluster.conf.j2
+    dest: "/etc/postgresql-common/createcluster.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  notify:
+    - Restart postgresql service
+  tags:
+    - configure
+
+- name: Install postgresql
+  ansible.builtin.package:
+    name: "{{ postgresql__package }}"
+    state: present
+  become: true
+  tags:
+    - package
+
+- name: Install postgresql module packages
+  ansible.builtin.package:
+    name: "{{ postgresql__module_packages }}"
+    state: present
+  when: "postgresql__module_packages | length > 0"
+  become: true
+  tags:
+    - package
+
+- import_tasks: configure.yml
+
+- name: Start and enable postgresql service
+  ansible.builtin.service:
+    name: "{{ postgresql__service }}"
+    enabled: true
+    state: started
+  become: true
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Enable postgresql default extensions
+  community.postgresql.postgresql_ext:
+    name: "{{ item.1 }}"
+    db: "{{ item.0 }}"
+    state: present
+  become_user: "{{ postgresql__system_user }}"
+  become: true
+  notify:
+    - Restart postgresql service
+  loop: "{{ ['template1', 'postgres'] | product(postgresql__enabled_modules) | list }}"
+  loop_control: 
+    label: "Creating extension {{ item.1 }} in database {{ item.0 }}"
+
+- name: Configure postgresql module conf
+  ansible.builtin.template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/postgresql/{{ postgresql_version }}/main/conf.d/50-{{ item }}.conf"
+    owner: "{{ postgresql__system_user }}"
+    group: "{{ postgresql__system_group }}"
+    mode: "0600"
+  loop: 
+    - "credcheck"
+    - "pgaudit"
+    - "set_user"
+  become: true
+  notify:
+    - Restart postgresql service
+  tags:
+    - configure
+
+- name: Manage User accounts
+  community.postgresql.postgresql_user:
+    name: "{{ item.name }}"
+    password: "{{ item.password | default(omit) }}"
+    role_attr_flags: "{{ item.role_attr_flags | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+    login_host: "{{ postgresql_login_host | default(omit) }}"
+    login_password: "{{ postgresql_login_password | default(omit) }}"
+    login_user: "{{ postgresql_login_user | default(postgresql__system_user) }}"
+    login_unix_socket: "{{ postgresql_login_unix_socket | default(postgresql_unix_socket_directories) }}"
+    port: "{{ postgresql_login_port if postgresql_login_port else omit }}"
+  loop: "{{ postgresql_users }}"
+  loop_control:
+    label: "{{ item.name }} => {{ item.state | default('present') }}"
+  no_log: "{{ postgresql_users_no_log }}"
+  become: true
+  become_user: "{{ postgresql__system_user }}"
+
+- import_tasks: databases.yml
+
+- name: Set Postgresql User Priviledges
+  community.postgresql.postgresql_privs:
+    roles: "{{ item.roles }}"
+    login_db: "{{ item.login_db }}"
+    type: "{{ item.type }}"
+    privs: "{{ item.privs | default(omit) }}"
+    objs: "{{ item.objs | default(omit) }}"
+    schema: "{{ item.schema | default(omit) }}"
+    session_role: "{{ item.session_role | default(omit) }}"
+    fail_on_role: "{{ item.fail_on_role | default(true) }}"
+    grant_option: "{{ item.grant_option | default(omit) }}"
+    target_roles: "{{ item.target_roles | default(omit) }}"
+    login_host: "{{ postgresql_login_host | default(omit) }}"
+    login_password: "{{ postgresql_login_password | default(omit) }}"
+    login_user: "{{ postgresql_login_user | default(postgresql__system_user) }}"
+    login_unix_socket: "{{ postgresql_login_unix_socket | default(postgresql_unix_socket_directories) }}"
+    port: "{{ postgresql_login_port if postgresql_login_port else omit }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ postgresql_privs }}"
+  become: true
+  become_user: "{{ postgresql__system_user }}"
+

@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+{% import 'macros.j2' as postgresql_macros with context %}
+# Set User
+{% if postgresql_enable_module_set_user %}
+{{ postgresql_macros.postgresql_conf_format("set_user.block_alter_system", postgresql_set_user_block_alter_system) -}}
+{{ postgresql_macros.postgresql_conf_format("set_user.block_copy_program", postgresql_set_user_block_copy_program) -}}
+{{ postgresql_macros.postgresql_conf_format("set_user.block_log_statement", postgresql_set_user_block_log_statement) -}}
+{{ postgresql_macros.postgresql_conf_format("set_user.superuser_allowlist", postgresql_set_user_superuser_allowlist) -}}
+{{ postgresql_macros.postgresql_conf_format("set_user.nosuperuser_target_allowlist", postgresql_set_user_nosuperuser_target_allowlist) -}}
+{{ postgresql_macros.postgresql_conf_format("set_user.exit_on_error", postgresql_set_user_exit_on_error) -}}
+{% endif %}

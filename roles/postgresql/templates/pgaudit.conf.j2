@@ -1,0 +1,15 @@
+{{ ansible_managed | comment }}
+{% import 'macros.j2' as postgresql_macros with context %}
+# PGAUDIT Conf
+{% if postgresql_enable_module_pgaudit %}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log_catalog", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log_client", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log_level", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log_parameter", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log_", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log", postgresql_pgaudit_log) -}}
+{{ postgresql_macros.postgresql_conf_format("pgaudit.log", postgresql_pgaudit_log) -}}
+{% endif %}

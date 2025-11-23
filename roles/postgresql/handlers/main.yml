@@ -1,0 +1,13 @@
+---
+# handlers file for samba
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: true
+
+- name: Restart postgresql service
+  ansible.builtin.service:
+    name: "{{ postgresql__service }}"
+    state: restarted
+  become: true

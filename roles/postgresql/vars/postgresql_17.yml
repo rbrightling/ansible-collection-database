@@ -1,0 +1,3 @@
+---
+postgresql__unsupported_config_option:
+  - "db_user_namespace"

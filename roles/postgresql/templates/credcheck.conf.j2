@@ -1,0 +1,42 @@
+{{ ansible_managed | comment }}
+{% import 'macros.j2' as postgresql_macros with context %}
+# Credcheck
+{% if postgresql_enable_module_credcheck %}
+
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_min_length", postgresql_credcheck_username_min_length) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_min_special", postgresql_credcheck_username_min_special) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_min_digit", postgresql_credcheck_username_min_digit) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_min_upper", postgresql_credcheck_username_min_upper) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_min_lower", postgresql_credcheck_username_min_lower) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_min_repeat", postgresql_credcheck_username_min_repeat) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_contain_password", postgresql_credcheck_username_contain_password) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_contain", postgresql_credcheck_username_contain) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_not_contain", postgresql_credcheck_username_not_contain) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.username_ignore_case", postgresql_credcheck_username_ignore_case) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_min_length", postgresql_credcheck_password_min_length) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_min_special", postgresql_credcheck_password_min_special) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_min_digit", postgresql_credcheck_password_min_digit) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_min_upper", postgresql_credcheck_password_min_upper) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_min_lower", postgresql_credcheck_password_min_lower) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_min_repeat", postgresql_credcheck_password_min_repeat) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_contain_username", postgresql_credcheck_password_contain_username) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_contain", postgresql_credcheck_password_contain) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_not_contain", postgresql_credcheck_password_not_contain) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_ignore_case", postgresql_credcheck_password_ignore_case) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_valid_until", postgresql_credcheck_password_valid_until) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_valid_max", postgresql_credcheck_password_valid_max) }}
+
+{{ postgresql_macros.postgresql_conf_format("credcheck.whitelist", postgresql_credcheck_whitelist) }}
+
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_reuse_history", postgresql_credcheck_password_reuse_history) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_reuse_interval", postgresql_credcheck_password_reuse_interval) }}
+
+{{ postgresql_macros.postgresql_conf_format("credcheck.max_auth_failure", postgresql_credcheck_max_auth_failure) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.reset_superuser", postgresql_credcheck_reset_superuser) }}
+
+{{ postgresql_macros.postgresql_conf_format("credcheck.password_valid_until", postgresql_credcheck_password_valid_until) }}
+{{ postgresql_macros.postgresql_conf_format("credcheck.whitelist_auth_failure", postgresql_credcheck_whitelist_auth_failure) }}
+
+
+{{ postgresql_macros.postgresql_conf_format("credcheck.auth_delay_ms", postgresql_credcheck_auth_delay_ms) }}
+{% endif %}

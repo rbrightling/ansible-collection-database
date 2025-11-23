@@ -1,0 +1,38 @@
+---
+# vars file for samba
+
+postgresql__pre_package: 
+  - "postgresql-common"
+  - "python3-psycopg2"
+
+postgresql__package: postgresql-{{ postgresql_version }}
+postgresql__service: postgresql
+
+postgresql__config_path: "/etc/postgresql/{{ postgresql_version }}/main"
+
+postgresql__module_packages: >-
+  {{
+    {} 
+    | combine({postgresql__credcheck_package: postgresql_enable_module_credcheck}) 
+    | combine({postgresql__pgaudit_package: postgresql_enable_module_pgaudit})
+    | combine({postgresql__set_user_package: postgresql_enable_module_set_user})
+    | dict2items | selectattr('value', 'equalto', true) | map(attribute='key')
+  }}
+
+postgresql__enabled_modules: >-
+  {{
+    {} 
+    | combine({'credcheck': postgresql_enable_module_credcheck}) 
+    | combine({'pgaudit': postgresql_enable_module_pgaudit})
+    | combine({'set_user': postgresql_enable_module_set_user})
+    | dict2items | selectattr('value', 'equalto', true) | map(attribute='key')
+  }}
+
+postgresql__system_user: postgres
+postgresql__system_group: postgres
+
+postgresql__credcheck_package: "{{ postgresql__package }}-credcheck"
+postgresql__pgaudit_package: "{{ postgresql__package }}-pgaudit"
+postgresql__set_user_package: "{{ postgresql__package }}-set-user"
+
+postgresql__shared_preload_libraries: "{{ postgresql__enabled_modules | join(',') + (postgresql_shared_preload_libraries if postgresql_shared_preload_libraries is not none else []) | join(',') }}"
